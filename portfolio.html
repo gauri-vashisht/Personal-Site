@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Hardware & ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink-deep: #c4446c;
+    --pink-mid: #e8738a;
+    --pink-soft: #f5b8c8;
+    --pink-pale: #fce8ef;
+    --cream: #fdf6f0;
+    --ink: #1a0a10;
+    --ink-light: #4a2535;
+    --mono: #8b4560;
+    --rule: #e8c5d0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  /* ── MARQUEE HEADER ── */
+  .marquee-strip {
+    background: var(--pink-deep);
+    color: var(--pink-pale);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    padding: 7px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 28s linear infinite;
+  }
+
+  .marquee-inner span { margin: 0 2.5rem; opacity: 0.85; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 4rem;
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    background: rgba(253, 246, 240, 0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    color: var(--pink-deep);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--pink-deep); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 7rem 3rem 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-issue {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    color: var(--mono);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--pink-deep);
+    display: block;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    color: var(--ink-light);
+    margin-top: 1.6rem;
+    max-width: 420px;
+    line-height: 1.5;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.65s forwards;
+  }
+
+  .btn-primary {
+    background: var(--pink-deep);
+    color: var(--cream);
+    padding: 0.75rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { background: var(--pink-mid); transform: translateY(-1px); }
+
+  .btn-outline {
+    border: 1.5px solid var(--pink-deep);
+    color: var(--pink-deep);
+    padding: 0.75rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    background: transparent;
+  }
+
+  .btn-outline:hover { background: var(--pink-pale); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--pink-soft) 0%, var(--pink-mid) 60%, var(--pink-deep) 100%);
+  }
+
+  .hero-right-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .hero-right-text {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    text-align: right;
+    color: rgba(255,255,255,0.9);
+    opacity: 0;
+    animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .hero-right-text .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(255,255,255,0.15);
+    position: absolute;
+    top: -3rem;
+    right: 0;
+  }
+
+  .hero-right-text p {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  /* ── FLOATING CHIPS ── */
+  .chip-float {
+    position: absolute;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(4px);
+    padding: 0.45rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: white;
+    border-radius: 2px;
+    animation: floatChip 6s ease-in-out infinite;
+  }
+
+  .chip-1 { top: 18%; left: 8%; animation-delay: 0s; }
+  .chip-2 { top: 40%; left: 15%; animation-delay: 1.5s; }
+  .chip-3 { top: 62%; left: 6%; animation-delay: 3s; }
+  .chip-4 { top: 28%; right: 10%; animation-delay: 0.8s; }
+  .chip-5 { top: 55%; right: 6%; animation-delay: 2.2s; }
+
+  @keyframes floatChip {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 6rem 4rem; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pink-deep);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 3rem;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--pink-deep);
+  }
+
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 6rem;
+    align-items: start;
+    border-top: 1px solid var(--rule);
+  }
+
+  .about-left { position: sticky; top: 6rem; }
+
+  .about-body {
+    font-size: 1.15rem;
+    color: var(--ink-light);
+    line-height: 1.85;
+  }
+
+  .about-body p + p { margin-top: 1.2rem; }
+
+  .skills-grid {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--pink-mid);
+    color: var(--pink-deep);
+    background: var(--pink-pale);
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .skill-tag:hover { background: var(--pink-soft); }
+
+  /* ── PROJECTS ── */
+  #projects {
+    background: var(--ink);
+    color: var(--cream);
+    border-top: 4px solid var(--pink-deep);
+  }
+
+  #projects .section-label { color: var(--pink-soft); }
+  #projects .section-title { color: var(--cream); }
+  #projects .section-title em { color: var(--pink-mid); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .project-card {
+    background: #1a0a10;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.25s;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--pink-deep);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover { background: #2a1020; }
+  .project-card:hover::before { transform: scaleY(1); }
+
+  .project-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: -0.5rem;
+    right: 1.5rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .project-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--pink-mid);
+    margin-bottom: 0.8rem;
+  }
+
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .project-desc {
+    font-size: 0.95rem;
+    color: rgba(253, 246, 240, 0.6);
+    line-height: 1.7;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .project-tags {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .project-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid rgba(232, 115, 138, 0.35);
+    color: var(--pink-soft);
+    text-transform: uppercase;
+  }
+
+  .project-accent {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--pink-mid);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--pink-deep);
+    padding-bottom: 1px;
+  }
+
+  /* ── CURRENTLY ── */
+  #learning {
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .learning-card {
+    border-top: 2px solid var(--pink-deep);
+    padding-top: 1.8rem;
+  }
+
+  .learning-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 0.7rem;
+  }
+
+  .learning-card p {
+    font-size: 0.95rem;
+    color: var(--ink-light);
+    line-height: 1.7;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .learning-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.6rem;
+    color: var(--pink-mid);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  /* ── INTERESTS ── */
+  #interests {
+    background: var(--pink-pale);
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+
+  .interests-ticker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-top: 1rem;
+  }
+
+  .interest-item {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--pink-deep);
+    padding: 0.3rem 1.5rem;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.6s forwards;
+  }
+
+  .interest-item:nth-child(1) { animation-delay: 0.1s; }
+  .interest-item:nth-child(2) { animation-delay: 0.2s; }
+  .interest-item:nth-child(3) { animation-delay: 0.3s; }
+  .interest-item:nth-child(4) { animation-delay: 0.4s; }
+  .interest-item:nth-child(5) { animation-delay: 0.5s; }
+
+  .interest-item + .interest-item::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--pink-mid);
+    font-style: normal;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    border-top: 4px solid var(--pink-deep);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .contact-big {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .contact-big em {
+    font-style: italic;
+    color: var(--pink-deep);
+    display: block;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--ink-light);
+    font-size: 1rem;
+    transition: color 0.2s;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .contact-link:hover { color: var(--pink-deep); }
+
+  .contact-link-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pink-deep);
+    min-width: 70px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(253,246,240,0.4);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  footer span { color: var(--pink-mid); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Intersection observer classes */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    section { padding: 4rem 2rem; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 5rem 2rem 3rem; }
+    .hero-right { height: 280px; }
+    #about { grid-template-columns: 1fr; gap: 2rem; }
+    .about-left { position: static; }
+    .projects-grid { grid-template-columns: 1fr; }
+    #learning { grid-template-columns: 1fr; }
+    #contact { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>ARM Assembly</span><span>Embedded Systems</span><span>Verilog</span><span>FPGA Design</span><span>Deep Learning</span><span>Arduino</span><span>C / C++</span><span>Python</span><span>AWS Cloud</span><span>Digital Systems</span><span>ML Engineering</span><span>Hardware–Software Integration</span>
+    <span>ARM Assembly</span><span>Embedded Systems</span><span>Verilog</span><span>FPGA Design</span><span>Deep Learning</span><span>Arduino</span><span>C / C++</span><span>Python</span><span>AWS Cloud</span><span>Digital Systems</span><span>ML Engineering</span><span>Hardware–Software Integration</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">[PORTFOLIO]</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#learning">Learning</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-issue">Hardware × Software × ML — Delhi NCR</div>
+    <h1 class="hero-name">
+      Engineer<em>& Builder</em>
+    </h1>
+    <p class="hero-tagline">
+      Where silicon meets software — designing systems from the register level up to intelligent applications.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-bg"></div>
+    <div class="hero-right-grid"></div>
+
+    <div class="chip-1 chip-float">ARM Cortex</div>
+    <div class="chip-2 chip-float">Spartan-7</div>
+    <div class="chip-3 chip-float">Verilog HDL</div>
+    <div class="chip-4 chip-float">97% Accuracy</div>
+    <div class="chip-5 chip-float">CNN Model</div>
+
+    <div class="hero-right-text">
+      <div class="big-num">04</div>
+      <p>Projects Shipped</p>
+      <p>Hardware to Cloud</p>
+      <p>Delhi NCR, India</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left">
+    <div class="section-label">About</div>
+    <h2 class="section-title">The<br><em>Spectrum</em><br>Builder</h2>
+    <div class="skills-grid">
+      <span class="skill-tag">ARM Asm</span>
+      <span class="skill-tag">C / C++</span>
+      <span class="skill-tag">Verilog</span>
+      <span class="skill-tag">FPGA</span>
+      <span class="skill-tag">Arduino</span>
+      <span class="skill-tag">Python</span>
+      <span class="skill-tag">NumPy</span>
+      <span class="skill-tag">Pandas</span>
+      <span class="skill-tag">Matplotlib</span>
+      <span class="skill-tag">Scikit-learn</span>
+      <span class="skill-tag">MySQL</span>
+      <span class="skill-tag">AWS ↗</span>
+    </div>
+  </div>
+
+  <div class="about-body reveal">
+    <p>
+      I operate at the full vertical of computing — from writing bare-metal ARM assembly and architecting digital logic in Verilog, all the way up to training convolutional neural networks and building data pipelines. The gap between hardware and intelligence is where I feel most at home.
+    </p>
+    <p>
+      My work spans <strong>embedded systems and low-level computing</strong> — designing digital circuits, working with FPGAs, and programming microcontrollers — alongside <strong>machine learning and data analysis</strong> using Python's scientific stack.
+    </p>
+    <p>
+      Currently expanding into <strong>AWS cloud infrastructure</strong>, building ML projects end-to-end, and exploring how intelligent systems can be deployed reliably at scale.
+    </p>
+    <p>
+      Based in Delhi NCR. Always building something.
+    </p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title">Four <em>Projects</em></h2>
+
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-category">Transit · Full Stack</div>
+      <h3 class="project-title">CommuteGo Delhi NCR</h3>
+      <p class="project-desc">
+        A commute companion built for navigating the dense transit network of Delhi NCR — helping daily commuters plan routes, track options, and move smarter through the city.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Delhi NCR</span>
+        <span class="project-tag">Transit Data</span>
+        <span class="project-tag">Python</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <div class="project-category">Digital Logic · FPGA</div>
+      <h3 class="project-title">8:3 Priority Encoder — Spartan 7</h3>
+      <p class="project-desc">
+        Designed and implemented a priority encoder first in a Verilog simulation environment, then transferred the design onto a Spartan 7 Boolean Board. Multiple simultaneous high inputs are handled cleanly — only the highest-priority input drives the output.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Verilog HDL</span>
+        <span class="project-tag">Spartan-7</span>
+        <span class="project-tag">FPGA</span>
+        <span class="project-tag">Digital Design</span>
+      </div>
+      <span class="project-accent">Boolean Board ↗</span>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">03</div>
+      <div class="project-category">Deep Learning · Medical AI</div>
+      <h3 class="project-title">Malaria Detection via CNN</h3>
+      <p class="project-desc">
+        A convolutional neural network that analyzes red blood cell images pixel-by-pixel against a large labeled dataset of infected and uninfected samples. Achieved <strong style="color: var(--pink-soft)">~97% accuracy</strong> in just 8 training epochs.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">CNN</span>
+        <span class="project-tag">TensorFlow</span>
+        <span class="project-tag">Kaggle Dataset</span>
+        <span class="project-tag">Medical AI</span>
+      </div>
+      <span class="project-accent">97% Accuracy · 8 Epochs</span>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">04</div>
+      <div class="project-category">Supervised ML · Finance</div>
+      <h3 class="project-title">Loan Approval via Supervised ML</h3>
+      <p class="project-desc">
+        Streamlined the loan approval process using classification models trained on applicant data. Reduces manual review overhead and surfaces patterns in creditworthiness that traditional methods miss.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Scikit-learn</span>
+        <span class="project-tag">Pandas</span>
+        <span class="project-tag">Classification</span>
+        <span class="project-tag">FinTech</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LEARNING / CURRENTLY -->
+<section id="learning">
+  <div style="grid-column: 1 / -1;">
+    <div class="section-label">Currently</div>
+    <h2 class="section-title">What I'm <em>Building</em> Toward</h2>
+  </div>
+
+  <div class="learning-card reveal">
+    <span class="learning-icon">☁</span>
+    <h3>AWS Cloud</h3>
+    <p>Getting hands-on with EC2, S3, Lambda, and cloud-native architectures — learning to deploy ML models and services at scale with reliable infrastructure.</p>
+  </div>
+
+  <div class="learning-card reveal">
+    <span class="learning-icon">⬡</span>
+    <h3>ML Projects</h3>
+    <p>Building end-to-end machine learning pipelines — from data wrangling and feature engineering to model evaluation and deployment. Always chasing the next dataset.</p>
+  </div>
+
+  <div class="learning-card reveal">
+    <span class="learning-icon">▣</span>
+    <h3>Systems Depth</h3>
+    <p>Going deeper on hardware–software co-design, real-time operating systems, and low-level optimization — the craft of making constrained systems perform brilliantly.</p>
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section id="interests">
+  <div class="section-label">Beyond the Code</div>
+  <h2 class="section-title" style="margin-bottom: 1rem;">Things That <em>Make Me Tick</em></h2>
+  <div class="interests-ticker">
+    <span class="interest-item">Political Discussions</span>
+    <span class="interest-item">Physical Media</span>
+    <span class="interest-item">Cyberdecks</span>
+    <span class="interest-item">Open Hardware</span>
+    <span class="interest-item">Retro Computing</span>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div>
+    <div class="section-label">Let's Connect</div>
+    <div class="contact-big">
+      Let's<em>Talk.</em>
+    </div>
+    <p style="margin-top: 1.5rem; color: var(--ink-light); font-style: italic; font-size: 1.05rem;">
+      Open to collaborations, interesting problems, and conversations about hardware, ML, or the state of the world.
+    </p>
+  </div>
+
+  <div class="contact-links reveal">
+    <a href="mailto:gauri.vashisht7@gmail.com" class="contact-link">
+      <span class="contact-link-icon">Email</span>
+      <span>gauri.vashisht7@gmail.com</span>
+    </a>
+    <a href="https://github.com/gauri-vashisht" target="_blank" class="contact-link">
+      <span class="contact-link-icon">GitHub</span>
+      <span>github.com/gauri-vashisht</span>
+    </a>
+    <a href="https://linkedin.com/gauri-vashisht" target="_blank" class="contact-link">
+      <span class="contact-link-icon">LinkedIn</span>
+      <span>linkedin.com/in/gauri-vashisht</span>
+    </a>
+    <a href="#" class="contact-link">
+      <span class="contact-link-icon">Location</span>
+      <span>Delhi NCR, India</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2026 — Hardware × ML Engineer</div>
+  <div>Delhi NCR, India</div>
+  <div>Built with <span>♥</span> & Verilog-level precision</div>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger project cards
+  document.querySelectorAll('.project-card.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+
+</body>
+</html>
